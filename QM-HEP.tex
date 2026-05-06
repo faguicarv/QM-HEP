@@ -25,9 +25,31 @@
 		The probability that the decay product be emitted in the $\hat{n}$ direction is:
 		\begin{equation}
 			\begin{split}
-				P(\hat{n}) & = \text{Tr} \left( \frac{1}{2} \left[ \mathcal{I} + \vec{B} \cdot \vec{\sigma} \right] \frac{1}{2} \left[ \mathcal{I} + \hat{n} \cdot \vec{\sigma} \right] \right) \\
-				& = \text{Tr} \left( \frac{1}{4} \left[ \mathcal{I} + \vec{B} \cdot \vec{\sigma} + \hat{n} \cdot \vec{\sigma} + (\vec{B} \cdot \vec{\sigma})(\hat{n} \cdot \vec{\sigma})  \right] \right)
+				\text{p}(\hat{n}) & = \text{Tr} \left[ \frac{1}{2} \left( \mathcal{I} + \vec{B} \cdot \vec{\sigma} \right) \frac{1}{2} \left( \mathcal{I} + \hat{n} \cdot \vec{\sigma} \right) \right] \\
+				& = \text{Tr} \left[ \frac{1}{4} \left( \mathcal{I} + \vec{B} \cdot \vec{\sigma} + \hat{n} \cdot \vec{\sigma} + \underbrace{(\vec{B} \cdot \vec{\sigma})(\hat{n} \cdot \vec{\sigma})}_{(\vec{B} \cdot \hat{n})I + i(\vec{B} \times \hat{n})\cdot \vec{\sigma}} \right) \right] \\
+				& = \frac{1}{4} \text{Tr} \left[ \mathcal{I} + \vec{B} \cdot \vec{\sigma} + \hat{n} \cdot \vec{\sigma} + (\vec{B} \cdot \hat{n})I + i(\vec{B} \times \hat{n})\cdot \vec{\sigma} \right] \\
+				& = \frac{1}{4} \text{Tr} \left[ \mathcal{I} + \left( \vec{B} + \hat{n} + i(\vec{B} \times \hat{n}) \right) \cdot \vec{\sigma} + (\vec{B} \cdot \hat{n}) \mathcal{I} \right] \\
+				& = \frac{1}{4} \left[ \underbrace{\text{Tr} \left[ \mathcal{I} \right]}_{4} + \underbrace{\text{Tr} \left[ \left( \vec{B} + \hat{n} + i(\vec{B} \times \hat{n}) \right) \cdot \vec{\sigma} \right]}_{\vec{\sigma} \text{'s are traceless}} + \text{Tr} \left[ (\vec{B} \cdot \hat{n})I \right]  \right] \\
+				& = \frac{1}{4} \left[ 2 + 2\left( \vec{B} \cdot \hat{n} \right) \right]
 			\end{split}
+		\end{equation}
+
+		So, the probability is given by:
+		\begin{equation}
+			\text{p}(\hat{n}) = \frac{1}{2} \left[ 1 + \vec{B}\cdot \hat{n} \right]
+		\end{equation}
+
+		However, the probability isn't normalized in the solid angle space. Let's say that $\text{P} (\hat{n}) \propto 1 +\vec{B}\cdot \hat{n}$, then:
+		\begin{align}
+			\int d\Omega \ \text{p} (\hat{n}) = 1 \\
+			\int d\Omega \left[ c (1+\vec{B}\cdot\hat{n}) \right] = 1 \\
+			c \underbrace{\int d\Omega}_{4\pi} + c\vec{B} \cdot \underbrace{\int d\Omega \ \hat{n}}_{0} = 1 \\
+			c = \frac{1}{4\pi}
+		\end{align}
+
+		Finally, the probability density is given by:
+		\begin{equation}
+			\text{p} (\hat{n}) = \frac{1}{4\pi} \left[ 1 + \vec{B} \cdot \hat{n} \right]
 		\end{equation}
 
 
