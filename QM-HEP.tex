@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Quantum Tomography for High Energy Physics}
+\author{N. Viaux, A. Norambuena, F. Aguilar-Carvajal}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Quantum Tomography at work}
+	\subsection{One Spin-1/2 system}
+		Let's describe the one spin-1/2 density matrix:
+		\begin{equation}
+			\rho = \frac{1}{2} \left( \mathcal{I} + \vec{B} \cdot \vec{\sigma} \right)
+		\end{equation}
+
+		If we want to analyze a decay $\tau / \overline{\tau} \rightarrow l^+ / l^-$, then the option of meassure just two directions (up/down) isn't available, instead we need to meassure in a space, in a solid angle space. So, we have the intention of meassure in a specific direction in which the product of the decay goes on, say $\hat{n}$, then the proyector operator will take the form:
+		\begin{equation}
+			\Pi_{\hat{n}} = \frac{1}{2} \left( \mathcal{I} + \hat{n} \cdot \vec{\sigma} \right)
+		\end{equation}
+
+		The probability that the decay product be emitted in the $\hat{n}$ direction is:
+		\begin{equation}
+			\begin{split}
+				P(\hat{n}) & = \text{Tr} \left( \frac{1}{2} \left[ \mathcal{I} + \vec{B} \cdot \vec{\sigma} \right] \frac{1}{2} \left[ \mathcal{I} + \hat{n} \cdot \vec{\sigma} \right] \right) \\
+				& = \text{Tr} \left( \frac{1}{4} \left[ \mathcal{I} + \vec{B} \cdot \vec{\sigma} + \hat{n} \cdot \vec{\sigma} + (\vec{B} \cdot \vec{\sigma})(\hat{n} \cdot \vec{\sigma})  \right] \right)
+			\end{split}
+		\end{equation}
+
+
+\end{document}
