@@ -30,7 +30,7 @@
 				& = \frac{1}{4} \text{Tr} \left[ \mathcal{I} + \vec{B} \cdot \vec{\sigma} + \hat{n} \cdot \vec{\sigma} + (\vec{B} \cdot \hat{n})I + i(\vec{B} \times \hat{n})\cdot \vec{\sigma} \right] \\
 				& = \frac{1}{4} \text{Tr} \left[ \mathcal{I} + \left( \vec{B} + \hat{n} + i(\vec{B} \times \hat{n}) \right) \cdot \vec{\sigma} + (\vec{B} \cdot \hat{n}) \mathcal{I} \right] \\
 				& = \frac{1}{4} \left[ \underbrace{\text{Tr} \left[ \mathcal{I} \right]}_{4} + \underbrace{\text{Tr} \left[ \left( \vec{B} + \hat{n} + i(\vec{B} \times \hat{n}) \right) \cdot \vec{\sigma} \right]}_{\vec{\sigma} \text{'s are traceless}} + \text{Tr} \left[ (\vec{B} \cdot \hat{n})I \right]  \right] \\
-				& = \frac{1}{4} \left[ 2 + 2\left( \vec{B} \cdot \hat{n} \right) \right]
+				& = \frac{1}{4} \left[ 2 + 2 \vec{B} \cdot \hat{n} \right]
 			\end{split}
 		\end{equation}
 
@@ -51,6 +51,53 @@
 		\begin{equation}
 			\text{p} (\hat{n}) = \frac{1}{4\pi} \left[ 1 + \vec{B} \cdot \hat{n} \right]
 		\end{equation}
+
+		Finally, to perform Quantum Tomography we need to include a \textit{Spin-analyzing power} parameter, $\kappa$, in order to cunatify how efficiently the $\hat{n}$ direction tracks the original polarization of the mother particle $\vec{B}$.
+		\begin{equation}
+			\text{p}(\hat{n}) = \frac{1}{4\pi} \left[ 1 + \kappa \vec{B} \cdot \hat{n} \right]
+		\end{equation}
+
+	\subsection{Important step to further probe}
+		An important step that isn't detailled in the literature, and also I still don't completelly understand it, is that to obtain a full probability density function that the decay product be projected ($\hat{n}$) in a particular direction (+ or -), is multiply the probabilities of each path; that is:
+		\begin{align}
+			\text{p}(\hat{n}^+, \hat{n}^-) = \frac{1}{4\pi} \left[ 1+\kappa_+ B_i^+ n_i^+ \right] \frac{1}{4\pi} \left[ 1 + \kappa_- B_j^- n_j^- \right] \\
+			\text{p}(\hat{n}^+, \hat{n}^-) = \frac{1}{(4\pi)^2} \left[ 1 + \kappa_+ B_i^+ n_i^+ + \kappa_- B_j^- n_j^- + \kappa_+ \kappa_- \sum_{i,j} C_{ij} n_i^+ n_j^- \right]
+		\end{align}
+
+	\subsection{Expected values}
+		Since we already have an expression for the probability density function, the next step is try to find an expected value for a particular direction for the decay product.
+
+		\subsubsection{$\langle \hat{n}^+ \rangle$}
+			\begin{equation}
+				\begin{split}
+					\langle n_i^+ \rangle & = \int d\Omega^+ d\Omega^- n_l^+ \text{p}(n^+, n^-) \\
+					& = \int d\Omega^+ d\Omega^- n_l^+ \frac{1}{(4\pi)^2} \left[ 1 + \kappa_+ B_i^+ n_i^+ + \kappa_- B_j^- n_j^- + \kappa_+ \kappa_- \sum_{i,j} C_{ij} n_i^+ n_j^- \right] \\
+					& = \frac{1}{(4\pi)^2} \int d\Omega^+ d\Omega^- \left[ n_l^+ + \kappa_+ B_i^+ n_l^+ n_i^+ + \kappa_- B_j^- n_l^+ n_j^- + \kappa_+ \kappa_- \sum_{i,j} C_{ij} n_k^+ n_i^+ n_j^- \right] \\
+					& = \frac{1}{(4\pi)^2} \int d\Omega^+ d\Omega^- \left[ \underbrace{n_l^+}_{(1)} + \underbrace{\kappa_+ B_i^+ n_l^+ n_i^+}_{(2)} + \underbrace{\kappa_- B_j^- n_l^+ n_j^-}_{(3)} + \underbrace{\kappa_+ \kappa_- \sum_{i,j} C_{ij} n_l^+ n_i^+ n_j^-}_{(4)} \right]
+				\end{split}
+			\end{equation}
+
+			\begin{align}
+				(1): \ \ \ \int d\Omega^+ d\Omega^- n_l^+ = \int \underbrace{d\Omega^-}_{4\pi} \int \underbrace{d\Omega^+ n_l^+}_{0} = 0 \\
+				(2): \ \ \ \int d\Omega^+ d\Omega^- \kappa_+ B_i^+ n_l^+ n_i^+ = \kappa_+ B_i^+  \int \underbrace{d\Omega^-}_{4\pi} \int \underbrace{d\Omega^+ n_l^+ n_i^+}_{\frac{4\pi}{3}\delta_{li}} = \frac{(4\pi)^2}{3} \kappa_+ B_l^+ \\
+				(3): \ \ \ \int d\Omega^+ d\Omega^- \kappa_- B_j^- n_l^+ n_j^- = \kappa_- B_j^- \int \underbrace{d\Omega^+ n_l^+}_{0} \int \underbrace{d\Omega^- n_j^-}_{0} = 0 \\
+				(4): \ \ \ \int d\Omega^+ d\Omega^- \kappa_+ \kappa_- \sum_{i,j} C_{ij} n_l^+ n_i^+ n_j^- = \kappa_+ \kappa_- \sum_{i,j} C_{ij} \int d\Omega^+ n_l^+ n_i^+ \int \underbrace{d\Omega^- n_j^-}_{0} = 0
+			\end{align}
+
+			So, the expected value for the direction $n_i^+$ for the decay product is:
+			\begin{equation}
+				\langle n_i^+ \rangle = \frac{\kappa_+ B_i^+}{3}
+			\end{equation}
+
+			or, generally:
+			\begin{equation}
+				\langle n_i^{\pm} \rangle = \frac{\kappa_{\pm} B_i^{\pm}}{3}
+			\end{equation}
+
+
+
+
+
 
 
 \end{document}
