@@ -1,9 +1,24 @@
-\documentclass{article}
+\documentclass[onecolumn, amsmath, amssymb, aps, prd]{revtex4-2}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{dcolumn}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+    citecolor=blue,
+}
 
 \title{Quantum Tomography for High Energy Physics}
-\author{N. Viaux, A. Norambuena, F. Aguilar-Carvajal}
+
+% \author{F. Aguilar-Carvajal}
+% \email{faguilar816@gmail.com}
+% \affiliation{Departamento de Física, Universidad Técnica Federico Santa María, Campus San Joaquín}
 \date{May 2026}
 
 \begin{document}
@@ -77,12 +92,14 @@
 				\end{split}
 			\end{equation}
 
-			\begin{align}
-				(1): \ \ \ \int d\Omega^+ d\Omega^- n_l^+ = \int \underbrace{d\Omega^-}_{4\pi} \int \underbrace{d\Omega^+ n_l^+}_{0} = 0 \\
-				(2): \ \ \ \int d\Omega^+ d\Omega^- \kappa_+ B_i^+ n_l^+ n_i^+ = \kappa_+ B_i^+  \int \underbrace{d\Omega^-}_{4\pi} \int \underbrace{d\Omega^+ n_l^+ n_i^+}_{\frac{4\pi}{3}\delta_{li}} = \frac{(4\pi)^2}{3} \kappa_+ B_l^+ \\
-				(3): \ \ \ \int d\Omega^+ d\Omega^- \kappa_- B_j^- n_l^+ n_j^- = \kappa_- B_j^- \int \underbrace{d\Omega^+ n_l^+}_{0} \int \underbrace{d\Omega^- n_j^-}_{0} = 0 \\
-				(4): \ \ \ \int d\Omega^+ d\Omega^- \kappa_+ \kappa_- \sum_{i,j} C_{ij} n_l^+ n_i^+ n_j^- = \kappa_+ \kappa_- \sum_{i,j} C_{ij} \int d\Omega^+ n_l^+ n_i^+ \int \underbrace{d\Omega^- n_j^-}_{0} = 0
-			\end{align}
+			\begin{equation}
+				\begin{split}
+					(1): \ \ \ & \int d\Omega^+ d\Omega^- n_l^+ = \int \underbrace{d\Omega^-}_{4\pi} \int \underbrace{d\Omega^+ n_l^+}_{0} = 0 \\
+					(2): \ \ \ & \int d\Omega^+ d\Omega^- \kappa_+ B_i^+ n_l^+ n_i^+ = \kappa_+ B_i^+  \int \underbrace{d\Omega^-}_{4\pi} \int \underbrace{d\Omega^+ n_l^+ n_i^+}_{\frac{4\pi}{3}\delta_{li}} = \frac{(4\pi)^2}{3} \kappa_+ B_l^+ \\
+					(3): \ \ \ & \int d\Omega^+ d\Omega^- \kappa_- B_j^- n_l^+ n_j^- = \kappa_- B_j^- \int \underbrace{d\Omega^+ n_l^+}_{0} \int \underbrace{d\Omega^- n_j^-}_{0} = 0 \\
+					(4): \ \ \ & \int d\Omega^+ d\Omega^- \kappa_+ \kappa_- \sum_{i,j} C_{ij} n_l^+ n_i^+ n_j^- = \kappa_+ \kappa_- \sum_{i,j} C_{ij} \int d\Omega^+ n_l^+ n_i^+ \int \underbrace{d\Omega^- n_j^-}_{0} = 0
+				\end{split}
+			\end{equation}
 
 			So, the expected value for the direction $n_i^+$ for the decay product is:
 			\begin{equation}
@@ -90,9 +107,57 @@
 			\end{equation}
 
 			or, generally:
-			\begin{equation}
-				\langle n_i^{\pm} \rangle = \frac{\kappa_{\pm} B_i^{\pm}}{3}
+			\begin{equation} \label{eq1}
+				\langle n_i^{\pm} \rangle = \frac{\kappa_{\pm} B_i^{\pm}}{3} \rightarrow B_i^{\pm} = \frac{3}{\kappa_{\pm}} \langle n_i^{\pm} \rangle
 			\end{equation}
+
+			This $B_i^{\pm}$ coefficient it's a very usefull for the framework developed in this work. This is due to the contribution to find the density matrix of a two spin-1/2 system. Now, we still need to find an expression for the expected value for the projected direction of the decay product. Since we already have an expression to find it, there is another way to perform the calculation of this projected direction?
+			\begin{equation}
+				\langle n_i^+ \rangle = \int d\Omega^+ d\Omega^- n_i^+ \underbrace{\text{p}(n^+, n^-)}_{\text{another expression?}}
+			\end{equation}
+
+		\subsubsection{Find another $\text{p}(n^+, n^-)$}
+			In the particle physics context, the probability of produce a pair $\tau$/$\overline{\tau}$ and then decay to a product in the +/- direction came given by the cross section fo the proces. In this sense,
+			\begin{equation}
+				\int d\Omega^+ d\Omega^- \frac{d^2\sigma}{d\Omega^+ d\Omega^-} = \int d\sigma = \sigma_{total}
+			\end{equation}
+
+			For a probability density function, this result should be normalized:
+			\begin{equation}
+				\int d\Omega^+ d\Omega^- \frac{1}{\sigma_{total}} \frac{d^2\sigma}{d\Omega^+ d\Omega^-} = 1 \rightarrow \text{p}(n^+, n^-) \propto \frac{1}{\sigma} \frac{d^2\sigma}{d\Omega^+ d\Omega^-}
+			\end{equation}
+
+			For instance, we can take this expression and perform some computation to get the expected value for a projected particular direction:
+			\begin{equation}
+				\begin{split}
+					\langle n_i^+ \rangle & = \int d\Omega^+ d\Omega^- n_i^+ \frac{1}{\sigma} \frac{d^2\sigma}{d\Omega^+ d\Omega^-} \\
+					& = \frac{1}{\sigma} \int d\Omega^+ n_i^+ \frac{d\sigma}{d\Omega^+}
+				\end{split}
+			\end{equation}
+
+			or, generally,
+			\begin{equation}
+				\langle n_i^{\pm} \rangle = \frac{1}{\sigma} \int d\Omega^{\pm} n_i^{\pm} \frac{d\sigma}{d\Omega^{\pm}}
+			\end{equation}
+
+
+			Let's replace this expression in~[\ref{eq1}]:
+			\begin{equation}
+				B_i^{\pm} = \frac{3}{\kappa_{\pm}} \frac{1}{\sigma} \int d\Omega^{\pm} n_i^{\pm} \frac{d\sigma}{d\Omega^{\pm}}
+			\end{equation}
+
+		\subsection{$\langle n_i^+ n_j^- \rangle$}
+			Now, we will try to find another observable in this framework, something that can be meassure or can serve in order to obtain a complete description of the density matrix. Let's see the expected value of a product of projections:
+			\begin{equation}
+				\begin{split}
+					\langle n_i^+ n_j^- \rangle & = \int d\Omega^+ d\Omega^- n_i^+ n_j^- \text{p}(n^+, n^-) \\
+					& = \int d\Omega^+ d\Omega^- n_i^+ n_j^- \left[ 1 + \kappa_+ B_l^+ n_l^+ + \kappa_- B_m^- n_m^- + \kappa_+ \kappa_- \sum_{l,m} C_{lm} n_l^+ n_m^- \right] \\
+					& = \int d\Omega^+ d\Omega^- \left[ n_i^+ n_j^- + \kappa_+ B_l^+ n_i^+ n_j^- n_l^+ + \kappa_- B_m^- n_i^+ n_j^- n_m^- + \kappa_+ \kappa_- \sum_{l,m} C_{lm} n_i^+ n_j^- n_l^+ n_m^- \right] \\
+				\end{split}
+			\end{equation}
+
+
+
 
 
 
