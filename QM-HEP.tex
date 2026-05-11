@@ -68,7 +68,7 @@
 		\end{equation}
 
 		Finally, to perform Quantum Tomography we need to include a \textit{Spin-analyzing power} parameter, $\kappa$, in order to cunatify how efficiently the $\hat{n}$ direction tracks the original polarization of the mother particle $\vec{B}$.
-		\begin{equation}
+		\begin{equation} \label{eq3}
 			\text{p}(\hat{n}) = \frac{1}{4\pi} \left[ 1 + \kappa \vec{B} \cdot \hat{n} \right]
 		\end{equation}
 
@@ -123,7 +123,7 @@
 			\end{equation}
 
 			For a probability density function, this result should be normalized:
-			\begin{equation}
+			\begin{equation} \label{eq2}
 				\int d\Omega^+ d\Omega^- \frac{1}{\sigma_{total}} \frac{d^2\sigma}{d\Omega^+ d\Omega^-} = 1 \rightarrow \text{p}(n^+, n^-) \propto \frac{1}{\sigma} \frac{d^2\sigma}{d\Omega^+ d\Omega^-}
 			\end{equation}
 
@@ -151,8 +151,8 @@
 			\begin{equation}
 				\begin{split}
 					\langle n_i^+ n_j^- \rangle & = \int d\Omega^+ d\Omega^- n_i^+ n_j^- \text{p}(n^+, n^-) \\
-					& = \int d\Omega^+ d\Omega^- n_i^+ n_j^- \frac{1}{4\pi} \left[ 1 + \kappa_+ B_l^+ n_l^+ + \kappa_- B_m^- n_m^- + \kappa_+ \kappa_- \sum_{l,m} C_{lm} n_l^+ n_m^- \right] \\
-					& = \frac{1}{4\pi} \int d\Omega^+ d\Omega^- \left[ \underbrace{n_i^+ n_j^-}_{(1)} + \underbrace{\kappa_+ B_l^+ n_i^+ n_j^- n_l^+}_{(2)} + \underbrace{\kappa_- B_m^- n_i^+ n_j^- n_m^-}_{(3)} + \underbrace{\kappa_+ \kappa_- \sum_{l,m} C_{lm} n_i^+ n_j^- n_l^+ n_m^-}_{(4)} \right] \\
+					& = \int d\Omega^+ d\Omega^- n_i^+ n_j^- \frac{1}{(4\pi)^2} \left[ 1 + \kappa_+ B_l^+ n_l^+ + \kappa_- B_m^- n_m^- + \kappa_+ \kappa_- \sum_{l,m} C_{lm} n_l^+ n_m^- \right] \\
+					& = \frac{1}{(4\pi)^2} \int d\Omega^+ d\Omega^- \left[ \underbrace{n_i^+ n_j^-}_{(1)} + \underbrace{\kappa_+ B_l^+ n_i^+ n_j^- n_l^+}_{(2)} + \underbrace{\kappa_- B_m^- n_i^+ n_j^- n_m^-}_{(3)} + \underbrace{\kappa_+ \kappa_- \sum_{l,m} C_{lm} n_i^+ n_j^- n_l^+ n_m^-}_{(4)} \right] \\
 				\end{split}
 			\end{equation}
 
@@ -171,6 +171,51 @@
 				\langle n_i^+ n_j^- \rangle = \frac{\kappa_+ \kappa_-}{9} C_{ij} \\
 				C_{ij} = \frac{9}{\kappa_+ \kappa_-} \langle n_i^+ n_j^- \rangle
 			\end{align}
+
+			Taking acount of Eq. [\ref{eq2}], we have:
+			\begin{equation}
+				C_{ij} = \frac{9}{\kappa_+ \kappa_-} \frac{1}{\sigma} \int d\Omega^+ d\Omega^- n_i^+ n_j^-\frac{d^2\sigma}{d\Omega^+ d\Omega^-}
+			\end{equation}
+
+		\subsection{Probabilities}
+			We have several ways to calculate the probabilities that the product decay came in a particular direction. This correlation can also appear in a way of probabilities. Let's recall Eq. [\ref{eq3}] y Eq. [\ref{eq2}]; the probabilities for the same case should be the same, as:
+			\begin{equation} \label{eq4}
+				\begin{split}
+					\frac{1}{4\pi} \left[ 1 + \kappa \vec{B} \cdot \hat{n} \right] & = \frac{1}{\sigma} \frac{d^2\sigma}{d\Omega^+ d\Omega^-} \\
+					\frac{1}{4\pi} \left[ 1 + \kappa \vec{B}_i^+ \hat{n}_i^+ \right] & = \frac{1}{\sigma} \frac{d\sigma}{d\Omega^+}
+				\end{split}
+			\end{equation}
+
+			Because we're looking a particular direction of decay in a solid angle, the following equations are necessary for our task:
+			\begin{align}
+				\vec{B}^+ \cdot \hat{n}^+ = B_x^+ \sin \theta_i^+ \cos \phi_i^+ + B_y^+ \sin \theta_i^+ \sin \phi_i^+ + B_z^+ \cos \theta_i^+ \\
+				d\Omega^{\pm} = d \cos \theta^{\pm} d\phi^{\pm}
+			\end{align}
+
+			Take the Eq. [\ref{eq4}] and integrate over the azimutal angle:
+			\begin{equation}
+				\begin{split}
+					\frac{1}{4\pi} \left[ 1 + \kappa \vec{B} \cdot \hat{n} \right] & = \frac{1}{\sigma} \frac{d\sigma}{d\Omega^+} \ \ \ \cdot \int d\phi^+ \\
+					\frac{1}{4\pi} \underbrace{\int_0^{2\pi} d\phi^+}_{2\pi} + \kappa_+ B_x^+ \sin \theta_i^+ \underbrace{\int_0^{2\pi} d\phi^+ \cos \phi_i^+}_{0} 	+ B_y^+ \sin \theta_i^+ & \underbrace{\int_0^{2\pi} d\phi^+ \sin \phi_i^+}_{0} + B_z^+ \cos \theta_i^+ \underbrace{\int_0^{2\pi} d\phi^+}_{2\pi} = \frac{1}{\sigma} \int_0^{2\pi} d\phi^+ \frac{d\sigma}{d\Omega^+} \\
+					\frac{1}{4\pi} \left[ 2\pi + 2\pi B_z^+ \cos \theta_i^+ \right]& = \frac{1}{\sigma} \int_0^{2\pi} d\phi^+ \frac{d\sigma}{d\cos \theta^+ d\phi^+} \\
+					\frac{1}{2} \left[ 1 + B_i^+ \cos \theta_i^+ \right] & = \frac{1}{\sigma} \frac{d\sigma}{d\cos \theta^+}
+				\end{split}
+			\end{equation}
+
+			Because the only surviving term is $B_z$, we choose a quantization axis in which $\hat{n} \cdot \hat{z} = \cos \theta_i$. In this framework, the remaining value of $\kappa$ depends on the process of interest; in this direction, $\kappa = \pm 1$, so the final result is as following:
+			\begin{equation}
+				\frac{1}{\sigma} \frac{d\sigma}{d\cos \theta_i^+} = \frac{1}{2} \left( 1 + B_i^+ \cos \theta_i^+ \right)
+			\end{equation}
+
+			If now, we focus on both directions of the decay products, we need to work in both solid angle spaces:
+			\begin{equation}
+				\begin{split}
+					\frac{1}{\sigma} \frac{d^2\sigma}{d\Omega^+ d\Omega^-} & = \frac{1}{(4\pi)^2} \left[ 1+\kappa_+ \vec{B}^+ \cdot \hat{n}^+ \right] \left[ 1 + \kappa_- \vec{B}^- \cdot \hat{n}^- \right] \ \ \ \cdot \int d\phi^+ d\phi^- \\
+					\frac{1}{\sigma} \int d\phi^+ d\phi^- \frac{d^2\sigma}{d\cos \theta_i^+ d\phi_i^+ d\cos \theta_j^- d\phi_j^-} & = \frac{1}{(4\pi)^2} \int_0^{2\pi} d\phi^+ d\phi^-\left[ 1+\kappa_+
+					B_i^+ n_i^+ + \kappa_- B_j^- n_j^- + \kappa_+ \kappa_- B_i^+ B_j^- n_i^+ n_j^- \right]  \\
+					\frac{1}{\sigma} \frac{d^2 \sigma}{d\cos \theta_i^+ d\cos \theta_j^-} & = \frac{1}{(4\pi)^2} \left[ (2\pi)^2 +  \right]
+				\end{split}
+			\end{equation}
 
 
 
