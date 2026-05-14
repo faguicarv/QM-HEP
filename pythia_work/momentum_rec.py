@@ -27,6 +27,8 @@ higgs_arr = np.array(higgs)
 taus_arr = np.array(taus)
 antitaus_arr = np.array(antitaus)
 
-print(higgs_arr)
-print(taus_arr)
-print(antitaus_arr)
+
+
+print(len(higgs_arr))
+print(len(taus_arr))
+print(len(antitaus_arr))

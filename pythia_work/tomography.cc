@@ -25,7 +25,7 @@ int main()
 	pythia.init();
 
     std::ofstream output_file("tomography_data.csv");
-    output_file << "event,id,px,py,pz,E" << std::endl; //Encabezado archivo datos
+    output_file << "event,id,px,py,pz,p,E" << std::endl; //Encabezado archivo datos
 
 	for(int i = 0; i < nevents; i++)
 	{
@@ -38,24 +38,28 @@ int main()
 			double px = pythia.event[j].px();
 			double py = pythia.event[j].py();
 			double pz = pythia.event[j].pz();
-			double pabs = sqrt(pow(px, 2) + pow(py,2) + pow(pz,2)); //momentum
+			double p = sqrt(pow(px, 2) + pow(py,2) + pow(pz,2)); //momentum
 
 			double m = pythia.event[j].m(); //masa
             double E = pythia.event[j].e(); //energía
 
-            if (abs(id) == 25 || abs(id) == 15)
+			bool is_tau = abs(id) == 25;
+			bool is_tau_from_higgs = abs(id) == 25 && pythia.event[j].iBotCopy() == j;
+
+            if (is_tau || abs(id) == 15)
             {
                 output_file << i << ", "
                             << id << ", "
                             << px << ", "
                             << py << ", "
                             << pz << ", "
+							<< p << ", "
                             << E << std::endl;
             }
 
 			hpz.fill(pz);
 
-			std::cout << id << " " << m << " " << pabs << std::endl;
+			std::cout << id << " " << m << " " << p << std::endl;
         }
     }
 
