@@ -1,0 +1,15 @@
+cat <<EOF > .gitignore
+*.aux
+*.log
+*.pdf
+*.out
+*.toc
+*.synctex.gz
+*.root
+*.csv
+*.dat
+EOF
+
+git add .gitignore
+git commit -m "Ignorar archivos auxiliares de LaTeX permanentemente"
+git push origin main
