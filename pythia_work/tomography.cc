@@ -25,7 +25,7 @@ int main()
 	pythia.init();
 
     std::ofstream output_file("tomography_data.csv");
-    output_file << "event,id,px,py,pz,p,E" << std::endl; //Encabezado archivo datos
+    output_file << "event,id,m,px,py,pz,p,E" << std::endl; //Encabezado archivo datos
 
 	for(int i = 0; i < nevents; i++)
 	{
@@ -50,6 +50,7 @@ int main()
             {
                 output_file << i << ", "
                             << id << ", "
+							<< m << ", "
                             << px << ", "
                             << py << ", "
                             << pz << ", "

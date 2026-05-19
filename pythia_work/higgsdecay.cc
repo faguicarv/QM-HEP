@@ -16,6 +16,7 @@ int main()
     pythia.readString("25:onMode = off");  // Apagar canales desintegración del higgs (id 25)
     pythia.readString("25:onIfMatch = 15 -15"); // Encender solamente tau/antitau (15/-15) provenientes de la desintegración del higgs
     pythia.readString("15:onIfMatch = 16 211"); // si tenemos un tau+, seleccionamos el canal de desintegración de neutrino tau (16) y pion + (211)
+    pythia.readString("-15:onIfMatch = -16 -211"); // si tenemos un tau-, seleccionamos el canal de desintegración de anti-neutrino tau (16) y pion - (211)
 	//pythia.readString("SoftQCD:all = on");
 	//pythia.readString("HardQCD:all = on");
 

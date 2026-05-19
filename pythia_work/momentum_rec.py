@@ -10,10 +10,7 @@ with open('tomography_data.csv', mode='r', newline='') as file:
         data.append(numeric_row)
 
 data_array = np.array(data)
-
-higgs = []
-taus = []
-antitaus = []
+higgs, taus, antitaus = [], [], []
 
 for i in range(len(data_array)):
     if (int(data_array[i][1]) == 25):
@@ -23,12 +20,8 @@ for i in range(len(data_array)):
     elif (int(data_array[i][1]) == -15):
         antitaus.append(data_array[i])
 
-higgs_arr = np.array(higgs)
-taus_arr = np.array(taus)
-antitaus_arr = np.array(antitaus)
+higgs_arr, taus_arr, antitaus_arr = np.array(higgs), np.array(taus), np.array(antitaus)
 
-
-
-print(len(higgs_arr))
-print(len(taus_arr))
-print(len(antitaus_arr))
+print(higgs_arr)
+print(taus_arr)
+print(antitaus_arr)
