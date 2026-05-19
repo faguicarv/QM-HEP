@@ -1,7 +1,7 @@
 cat <<EOF > .gitignore
 *.aux
 *.log
-*.pdf
+*.bib
 *.out
 *.toc
 *.synctex.gz
