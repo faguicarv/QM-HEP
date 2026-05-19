@@ -27,8 +27,13 @@ int main() {
         for(int j = 0; j < pythia.event.size(); j++)
         {
             int id = pythia.event[j].id(); // variable guarda id partícula
+            int status = pythia.event[j].status(); // estado (intermedio/final) de la partícula
 
-            if(id == 23 || id == 15 || id == -15) // guardamos sólo partículas de interés (se puede definir con un bool también) ESTA FUNCIONA PERO PROBAMOS OTRA
+            bool Z_final = (id == 23 && status == -22); // status entrega estado de la particula
+            bool tau_final = ((id == 15 || id == -15) && status == -23);
+
+            if(Z_final || tau_final)
+            //             if(id == 23 || id == 15 || id == -15) // guardamos sólo partículas de interés (se puede definir con un bool también) ESTA FUNCIONA PERO PROBAMOS OTRA
             {
 
                 double px = pythia.event[j].px(); // momentum partícula
