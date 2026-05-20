@@ -49,22 +49,62 @@ sin_theta = np.sqrt(1 - cos_theta**2)
 n_hat = np.cross(p_hat, k_hat, axis=1) / sin_theta
 r_hat = (p_hat - (k_hat * cos_theta)) / sin_theta
 
-# Calculemos las proyecciones de la dirección del momentum del pion en la base n,r,k
-piplus_3p = piplus_4p[:, 1:4].astype(float)
+def lorentz_boost(p4_particle, p4_parent):
+    """
+    Hace el Boost de Lorentz de una partícula al sistema en reposo de su 'parent' (madre).
+    p4_particle y p4_parent deben tener la forma (N, 4) -> [E, px, py, pz]
+    """
+    # Extraer componentes de la madre (el tau)
+    E_M, px_M, py_M, pz_M = p4_parent[:, 0], p4_parent[:, 1], p4_parent[:, 2], p4_parent[:, 3]
+    M = np.sqrt(E_M**2 - (px_M**2 + py_M**2 + pz_M**2)) # Masa invariante
 
-p_piplus_n = np.sum(piplus_3p * n_hat, axis=1, keepdims=True) / np.linalg.norm(piplus_3p, axis=1, keepdims=True)
-p_piplus_r = np.sum(piplus_3p * r_hat, axis=1, keepdims=True) / np.linalg.norm(piplus_3p, axis=1, keepdims=True)
-p_piplus_k = np.sum(piplus_3p * k_hat, axis=1, keepdims=True) / np.linalg.norm(piplus_3p, axis=1, keepdims=True)
+    # Calcular velocidad beta = p/E de la madre (con signo opuesto para ir a su reposo)
+    bx = -px_M / E_M
+    by = -py_M / E_M
+    bz = -pz_M / E_M
+
+    b2 = bx**2 + by**2 + bz**2
+    gamma = 1.0 / np.sqrt(1.0 - b2)
+
+    # Para evitar divisiones por cero si beta es cero
+    gamma2 = np.where(b2 > 0, (gamma - 1.0) / b2, 0.0)
+
+    # Extraer componentes de la hija (el pión)
+    E, px, py, pz = p4_particle[:, 0], p4_particle[:, 1], p4_particle[:, 2], p4_particle[:, 3]
+
+    # Producto punto escalar de beta y el trimomento de la hija
+    b_dot_p = bx*px + by*py + bz*pz
+
+    # Transformaciones de Lorentz vectoriales generales
+    E_prime  = gamma * (E + b_dot_p)
+    px_prime = px + gamma2 * b_dot_p * bx + gamma * E * bx
+    py_prime = py + gamma2 * b_dot_p * by + gamma * E * by
+    pz_prime = pz + gamma2 * b_dot_p * bz + gamma * E * bz
+
+    return np.column_stack((E_prime, px_prime, py_prime, pz_prime))
 
 
-plt.hist(p_piplus_k, bins=100)
-# plt.xlim(-1, 1)
-# plt.hist(p_piplus_r)
-# plt.hist(p_piplus_k)
+piplus_4p_rest = lorentz_boost(piplus_4p, tau_4p)
+
+# 2. Extraemos el NUEVO trimomento en reposo
+piplus_3p_rest = piplus_4p_rest[:, 1:4]
+
+# 3. Calculamos los cosenos directores usando el momento en REPOSO
+mag_pi_rest = np.linalg.norm(piplus_3p_rest, axis=1, keepdims=True)
+
+p_piplus_n = np.sum(piplus_3p_rest * n_hat, axis=1, keepdims=True) / mag_pi_rest
+p_piplus_r = np.sum(piplus_3p_rest * r_hat, axis=1, keepdims=True) / mag_pi_rest
+p_piplus_k = np.sum(piplus_3p_rest * k_hat, axis=1, keepdims=True) / mag_pi_rest
+
+# 4. Graficar (usamos density=True para ver frecuencias relativas normalizadas)
+plt.hist(p_piplus_n.flatten(), bins=40, density=True, alpha=0.5, label=r'$\cos\theta_n$')
+plt.hist(p_piplus_r.flatten(), bins=40, density=True, alpha=0.5, label=r'$\cos\theta_r$')
+plt.hist(p_piplus_k.flatten(), bins=40, density=True, alpha=0.5, label=r'$\cos\theta_k$')
+
+plt.xlim(-1, 1)
+plt.ylim(0, 1) # Como es uniforme de -1 a 1, la densidad debería ser plana cerca de 0.5
+plt.legend()
 plt.show()
-
-
-
 
 
 

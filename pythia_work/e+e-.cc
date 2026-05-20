@@ -3,7 +3,7 @@
 
 int main() {
 
-    int nevents = 1e5;
+    int nevents = 1e6;
 
     Pythia8::Pythia pythia;
 
