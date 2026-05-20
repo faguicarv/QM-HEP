@@ -18,42 +18,36 @@ int main() {
 
     pythia.init();
 
-    std::ofstream output_file("e+e-_data.csv");
-    output_file << "event,id,mass,px,py,pz,energy" << std::endl; //Encabezado archivo datos
+    std::ofstream output_file("e+e-_data.csv"); // define output
+    output_file << "event,id,mass,px,py,pz,energy" << std::endl; // Encabezado archivo datos
 
-    for(int i = 0; i < nevents; i++)
+    for(int i = 0; i < nevents; i++) // Corremos de 0 a nevents-1
     {
         if(!pythia.next()) continue;
 
-        for(int j = 0; j < pythia.event.size(); j++)
+        for(int j = 0; j < pythia.event.size(); j++) // Vemos dentro de todos los eventos generados
         {
             int id = pythia.event[j].id(); // variable guarda id partícula
-            int status = pythia.event[j].status(); // estado (intermedio/final) de la partícula
+            int pos_daug1 = pythia.event[j].daughter1(); // Da la posición en el evento de la hija, no la id
+            int pos_daug2 = pythia.event[j].daughter2();
 
-            bool Z_final = (id == 23 && status == -22); // status entrega estado de la particula
-            bool tau_final = ((id == 15 || id == -15) && status == -23);
+            int id_daug1 = pythia.event[pos_daug1].id();
+            int id_daug2 = pythia.event[pos_daug2].id();
 
-            if(Z_final || tau_final)
-            //             if(id == 23 || id == 15 || id == -15) // guardamos sólo partículas de interés (se puede definir con un bool también) ESTA FUNCIONA PERO PROBAMOS OTRA
+            int status = pythia.event[j].status();
+
+
+            if((id == 23) && std::abs(id_daug1) == 15)
             {
+                output_file << i << ", " << id << ", " << pythia.event[j].m() << ", " << pythia.event[j].px() << ", " << pythia.event[j].py() << ", " << pythia.event[j].pz() << ", " << pythia.event[j].e() << std::endl; // Guardamos datos del Z madre
 
-                double px = pythia.event[j].px(); // momentum partícula
-                double py = pythia.event[j].py();
-                double pz = pythia.event[j].pz();
-                double mass = pythia.event[j].m();
-                double E = pythia.event[j].e();
+                output_file << i << ", " << id_daug1 << ", " << pythia.event[pos_daug1].m() << ", " << pythia.event[pos_daug1].px() << ", " << pythia.event[pos_daug1].py() << ", " << pythia.event[pos_daug1].pz() << ", " << pythia.event[pos_daug1].e() << std::endl; // Guardamos datos del tau 1
 
-                output_file << i << ", "
-                            << id << ", "
-                            << mass << ", "
-                            << px << ", "
-                            << py << ", "
-                            << pz << ", "
-                            << E << std::endl;
 
-                std::cout << id << " " << px << " " << py << " " << pz << std::endl;
+                output_file << i << ", " << id_daug2 << ", " << pythia.event[pos_daug2].m() << ", " << pythia.event[pos_daug2].px() << ", " << pythia.event[pos_daug2].py() << ", " << pythia.event[pos_daug2].pz() << ", " << pythia.event[pos_daug2].e() << std::endl; // Guardamos datos del tau 2
             }
         }
+
     }
 
     output_file.close();
