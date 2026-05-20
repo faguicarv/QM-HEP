@@ -3,12 +3,12 @@
 
 int main() {
 
-    int nevents = 1e4;
+    int nevents = 1e5;
 
     Pythia8::Pythia pythia;
 
-    pythia.readString("Beams:idA = -11"); // Beam de electrones
-    pythia.readString("Beams:idB = 11"); // Beam de positrones
+    pythia.readString("Beams:idA = -11"); // Beam de positrones
+    pythia.readString("Beams:idB = 11"); // Beam de electrones
     pythia.readString("Beams:eCM = 91.1876"); // Z-Boson resonance energy
 
     pythia.readString("WeakSingleBoson:ffbar2gmZ = on");
@@ -19,7 +19,7 @@ int main() {
     pythia.init();
 
     std::ofstream output_file("e+e-_data.csv"); // define output
-    output_file << "event,id,mass,px,py,pz,energy" << std::endl; // Encabezado archivo datos
+    output_file << "event,id,mass,energy,px,py,pz" << std::endl; // Encabezado archivo datos
 
     for(int i = 0; i < nevents; i++) // Corremos de 0 a nevents-1
     {
@@ -46,18 +46,19 @@ int main() {
 
             if((id == 23) && std::abs(id_daug1) == 15)
             {
-                output_file << i << ", " << id << ", " << pythia.event[j].m() << ", " << pythia.event[j].px() << ", " << pythia.event[j].py() << ", " << pythia.event[j].pz() << ", " << pythia.event[j].e() << std::endl; // Guardamos datos del Z madre
-
-                output_file << i << ", " << id_daug1 << ", " << pythia.event[pos_daug1].m() << ", " << pythia.event[pos_daug1].px() << ", " << pythia.event[pos_daug1].py() << ", " << pythia.event[pos_daug1].pz() << ", " << pythia.event[pos_daug1].e() << std::endl; // Guardamos datos del tau 1
-
-
-                output_file << i << ", " << id_daug2 << ", " << pythia.event[pos_daug2].m() << ", " << pythia.event[pos_daug2].px() << ", " << pythia.event[pos_daug2].py() << ", " << pythia.event[pos_daug2].pz() << ", " << pythia.event[pos_daug2].e() << std::endl; // Guardamos datos del tau 2
-
                 if((id_grdaug1 == 211 || id_grdaug1 == 16) && (id_grdaug2 == 211 || id_grdaug2 == 16))
                 {
-                    output_file << i << ", " << id_grdaug1 << ", " << pythia.event[pos_grdaug1].m() << ", " << pythia.event[pos_grdaug1].px() << ", " << pythia.event[pos_grdaug1].py() << ", " << pythia.event[pos_grdaug1].pz() << ", " << pythia.event[pos_grdaug1].e() << std::endl; // Guardar datos tau o pi+
 
-                    output_file << i << ", " << id_grdaug2 << ", " << pythia.event[pos_grdaug2].m() << ", " << pythia.event[pos_grdaug2].px() << ", " << pythia.event[pos_grdaug2].py() << ", " << pythia.event[pos_grdaug2].pz() << ", " << pythia.event[pos_grdaug2].e() << std::endl; // Guardar datos tau o pi+
+                    output_file << i << ", " << id << ", " << pythia.event[j].m() << ", " << pythia.event[j].e() << ", " << pythia.event[j].px() << ", " << pythia.event[j].py() << ", " << pythia.event[j].pz() << std::endl; // Guardamos datos del Z madre
+
+                    output_file << i << ", " << id_daug1 << ", " << pythia.event[pos_daug1].m() << ", " << pythia.event[pos_daug1].e() << ", " << pythia.event[pos_daug1].px() << ", " << pythia.event[pos_daug1].py() << ", " << pythia.event[pos_daug1].pz() << std::endl; // Guardamos datos del tau 1
+
+
+                    output_file << i << ", " << id_daug2 << ", " << pythia.event[pos_daug2].m() << ", " << pythia.event[pos_daug2].e() << ", " << pythia.event[pos_daug2].px() << ", " << pythia.event[pos_daug2].py() << ", " << pythia.event[pos_daug2].pz() << std::endl; // Guardamos datos del tau 2
+
+                    output_file << i << ", " << id_grdaug1 << ", " << pythia.event[pos_grdaug1].m() << ", " <<  pythia.event[pos_grdaug1].e() << ", " << pythia.event[pos_grdaug1].px() << ", " << pythia.event[pos_grdaug1].py() << ", " << pythia.event[pos_grdaug1].pz() << std::endl; // Guardar datos tau o pi+
+
+                    output_file << i << ", " << id_grdaug2 << ", " << pythia.event[pos_grdaug2].m() << ", " << pythia.event[pos_grdaug2].e() << ", " << pythia.event[pos_grdaug2].px() << ", " << pythia.event[pos_grdaug2].py() << ", " << pythia.event[pos_grdaug2].pz() << std::endl; // Guardar datos tau o pi+
 
                     std::cout << "¡Canal Z-boson -> Tau -> pi^+ nu detectado en evento " << i << "!" << std::endl;
                 }
