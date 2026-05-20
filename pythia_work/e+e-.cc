@@ -14,7 +14,7 @@ int main() {
     pythia.readString("WeakSingleBoson:ffbar2gmZ = on");
     // pythia.readString("23:onMode = off"); // Apagamos canales de desintegración del Z
     pythia.readString("23:onMode = on"); // abrimos todos los canales de desintegración del Z
-    // pythia.readString("23:onIfMatch = 15 -15"); // Activamos sólo en canal de par taus
+    // pythia.readString("23:onIfMatch = 15 -15"); // Activamos sólo el canal de par taus
 
     pythia.init();
 
@@ -34,6 +34,13 @@ int main() {
             int id_daug1 = pythia.event[pos_daug1].id();
             int id_daug2 = pythia.event[pos_daug2].id();
 
+            int pos_grdaug1 = pythia.event[pos_daug1].daughter1(); // Busquemos eventos en que el tau desintegre en pi+ y neutrino tau
+            int pos_grdaug2 = pythia.event[pos_daug1].daughter2();
+            int id_grdaug1 = pythia.event[pos_grdaug1].id(); // Id del producto de desintegración del tau
+            int id_grdaug2 = pythia.event[pos_grdaug2].id();
+
+            // Debemos buscar que id_grdaug1,2 sean pi+ (id=211) y neutrino tau (id=16)
+
             int status = pythia.event[j].status();
 
 
@@ -45,6 +52,15 @@ int main() {
 
 
                 output_file << i << ", " << id_daug2 << ", " << pythia.event[pos_daug2].m() << ", " << pythia.event[pos_daug2].px() << ", " << pythia.event[pos_daug2].py() << ", " << pythia.event[pos_daug2].pz() << ", " << pythia.event[pos_daug2].e() << std::endl; // Guardamos datos del tau 2
+
+                if((id_grdaug1 == 211 || id_grdaug1 == 16) && (id_grdaug2 == 211 || id_grdaug2 == 16))
+                {
+                    output_file << i << ", " << id_grdaug1 << ", " << pythia.event[pos_grdaug1].m() << ", " << pythia.event[pos_grdaug1].px() << ", " << pythia.event[pos_grdaug1].py() << ", " << pythia.event[pos_grdaug1].pz() << ", " << pythia.event[pos_grdaug1].e() << std::endl; // Guardar datos tau o pi+
+
+                    output_file << i << ", " << id_grdaug2 << ", " << pythia.event[pos_grdaug2].m() << ", " << pythia.event[pos_grdaug2].px() << ", " << pythia.event[pos_grdaug2].py() << ", " << pythia.event[pos_grdaug2].pz() << ", " << pythia.event[pos_grdaug2].e() << std::endl; // Guardar datos tau o pi+
+
+                    std::cout << "¡Canal Z-boson -> Tau -> pi^+ nu detectado en evento " << i << "!" << std::endl;
+                }
             }
         }
 
