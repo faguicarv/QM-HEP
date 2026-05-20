@@ -12,8 +12,9 @@ int main() {
     pythia.readString("Beams:eCM = 91.1876"); // Z-Boson resonance energy
 
     pythia.readString("WeakSingleBoson:ffbar2gmZ = on");
-    pythia.readString("23:onMode = off"); // Apagamos canales de desintegración del Z
-    pythia.readString("23:onIfMatch = 15 -15"); // Activamos sólo en canal de par taus
+    // pythia.readString("23:onMode = off"); // Apagamos canales de desintegración del Z
+    pythia.readString("23:onMode = on"); // abrimos todos los canales de desintegración del Z
+    // pythia.readString("23:onIfMatch = 15 -15"); // Activamos sólo en canal de par taus
 
     pythia.init();
 
