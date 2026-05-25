@@ -20,7 +20,7 @@ ids = data_array[:, 1].astype(int)
 Z_boson, tau, antitau, piplus, neutau = data_array[ids == 23], data_array[ids == 15], data_array[ids == -15], data_array[ids == 211], data_array[ids == 16]
 
 # Construimos los cuatrimomentos de las partículas objetivo (Energía, 3momento)
-Z_4p, tau_4p, antitau_4p, piplus_4p, neutau_4p = Z_boson[:, 2:6].astype(float), tau[:, 2:6].astype(float), antitau[:, 2:6].astype(float), piplus[:, 2:6].astype(float), neutau[:, 2:6].astype(float)
+Z_4p, tau_4p, antitau_4p, piplus_4p, neutau_4p = Z_boson[:, 3:7].astype(float), tau[:, 3:7].astype(float), antitau[:, 3:7].astype(float), piplus[:, 3:7].astype(float), neutau[:, 3:7].astype(float)
 
 # Veamos cuántos eventos vamos a tener
 N_events = len(Z_boson)
@@ -72,18 +72,18 @@ plt.title("Proyección $\pi^+$-momentum en la base ($\hat{n}, \hat{r}, \hat{k}$)
 plt.legend()
 plt.show()
 
+# Como todavía los gráficos son planos, vamos a trabajar en realizar un boost del 3-momento del pion+ hacia el marco de referencia de la desintegración del tau
 
+# 3-momento y Energía del tau
+tau_energy = tau_4p[:, 0, np.newaxis].astype(float)
 
-# En el plot tenemos un histograma con todos los cos theta tendiendo hacia 1 y 0
-# Para lograr nuestro objetivo, debemos cambiar al sistema de referencia de reposo del Z, por lo que debemos aplicar un boost de Lorentz a los 3-momentos de todos
+# Factores de Lorentz beta y gamma
+beta, gamma = tau_3p / tau_energy, tau_energy / tau[:, 2, np.newaxis].astype(float)
 
-## 3-momento del tau y Energía Z-boson
-#tau_energy = tau_4p[:, 0, np.newaxis].astype(float)
-## vector de velocidad beta
-#beta = tau_3p / tau_energy
-
-## Factor de Lorentz gamma
-#gamma = tau_energy / tau[:, 2, np.newaxis].astype(float)
+print(beta)
+print(len(beta))
+print(gamma)
+print(len(gamma))
 
 #def boost_to_rest_frame(p4, beta, gamma):
     #"""
