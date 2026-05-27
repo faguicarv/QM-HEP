@@ -69,17 +69,16 @@ def boost_to_rest_frame(p4, beta, gamma):
     E = p4[:, 0:1]
     p3 = p4[:, 1:4]
     gamma = gamma.reshape(-1, 1)
-    v = beta
 
-    v_dot_p3 = np.sum(v * p3, axis=1, keepdims=True)
-    v2 = np.sum(v**2, axis=1, keepdims=True)
+    v_dot_p3 = np.sum(beta * p3, axis=1, keepdims=True)
+    v2 = np.sum(beta**2, axis=1, keepdims=True)
 
     factor, mask = np.zeros_like(v2), v2[:, 0] > 0
     factor[mask] = (gamma[mask] - 1.0) / v2[mask]
 
     # Ecuaciones boost de Lorentz
     E_prime = gamma * (E - v_dot_p3)
-    p3_prime = p3 + factor * v_dot_p3 * v - gamma * E * v
+    p3_prime = p3 + factor * v_dot_p3 * beta - gamma * E * beta
 
     p4_prime = np.hstack((E_prime, p3_prime))
 
@@ -98,8 +97,8 @@ cos_k = np.sum(piplus_tRF * k_hat, axis=1, keepdims=True)
 
 # Graficar
 plt.figure(figsize=(8, 6))
-plt.hist(cos_n, bins=50, density=True, histtype='step', linewidth=2, label=r'$\cos\theta_n^+$')
-plt.hist(cos_r, bins=50, density=True, histtype='step', linewidth=2, label=r'$\cos\theta_r^+$')
+#plt.hist(cos_n, bins=50, density=True, histtype='step', linewidth=2, label=r'$\cos\theta_n^+$')
+#plt.hist(cos_r, bins=50, density=True, histtype='step', linewidth=2, label=r'$\cos\theta_r^+$')
 plt.hist(cos_k, bins=50, density=True, histtype='step', linewidth=2, label=r'$\cos\theta_k^+$')
 #plt.xlim(-1.1, 1.1)
 plt.xlabel(r"$\cos\theta_n$")
