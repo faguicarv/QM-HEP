@@ -17,10 +17,12 @@ data_array = np.array(data)
 ids = data_array[:, 1].astype(int)
 
 # Filtramos directamente por id de partícula y creamos un array con toda la información correspondiente
-Z_boson, tau, antitau, piplus, neutau = data_array[ids == 23], data_array[ids == 15], data_array[ids == -15], data_array[ids == 211], data_array[ids == 16]
+Z_boson, tau, antitau, piplus, piminus, neutau, antineutau = data_array[ids == 23], data_array[ids == 15], data_array[ids == -15], data_array[ids == 211], data_array[ids == -211], data_array[ids == 16], data_array[ids == -16]
 
-# Construimos los cuatrimomentos de las partículas objetivo (Energía, 3momento)
-Z_4p, tau_4p, antitau_4p, piplus_4p, neutau_4p = Z_boson[:, 3:7].astype(float), tau[:, 3:7].astype(float), antitau[:, 3:7].astype(float), piplus[:, 3:7].astype(float), neutau[:, 3:7].astype(float)
-
+print(len(Z_boson))
 print(len(tau))
+print(len(antitau))
 print(len(piplus))
+print(len(piminus))
+print(len(neutau))
+print(len(antineutau))

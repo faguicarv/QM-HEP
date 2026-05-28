@@ -6,3 +6,6 @@ tomography: tomography.cc
 
 e+e-: e+e-.cc
 	g++ -I/home/francisco/software/pythia/pythia8317/include $@.cc -o $@ -lpythia8 -L/home/francisco/software/pythia/pythia8317/lib
+
+test: test.cc
+	g++ -I/home/francisco/software/pythia/pythia8317/include $@.cc -o $@ -lpythia8 -L/home/francisco/software/pythia/pythia8317/lib

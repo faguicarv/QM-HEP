@@ -3,7 +3,7 @@
 
 int main() {
 
-    int nevents = 5e6;
+    int nevents = 5e4;
 
     Pythia8::Pythia pythia;
 
@@ -42,49 +42,69 @@ int main() {
 
                 if(std::abs(id_daug1) == 15 && std::abs(id_daug2) == 15) // Seguimos pero sólo si las hijas son un tau o antitau
                 {
-                    // Interrogamos al tau en busca de pi^+ y nu_tau
-                    int pos_grdaug1_1 = pythia.event[pos_daug1].daughter1();
-                    int pos_grdaug1_2 = pythia.event[pos_daug1].daughter2();
+                    // EN ESTE PUNTO HAY QUE LEER TODAS LAS NIETAS Y SELECCIONAR SÓLO LAS QUE NOS SIRVA
+                    // EN VEZ DE BUSCAR LA ID UNA A UNA, MEJOR TENER LA LISTA COMPLETA Y DE AHÍ SELECCIONAR LO INTERESANTE
 
-                    int id_grdaug1_1 = pythia.event[pos_grdaug1_1].id(); // Id nieta 1 del Z (producto del Tau)
-                    int id_grdaug1_2 = pythia.event[pos_grdaug1_2].id(); // Id nieta 2 del Z (producto del Tau)
-
-                    // Interrogamos al Tau 2 en busca de pi y nu_tau
-                    int pos_grdaug2_1 = pythia.event[pos_daug2].daughter1();
-                    int pos_grdaug2_2 = pythia.event[pos_daug2].daughter2();
-
-                    int id_grdaug2_1 = pythia.event[pos_grdaug2_1].id(); // Id nieta 1 del Z (producto del Tau)
-                    int id_grdaug2_2 = pythia.event[pos_grdaug2_2].id(); // Id nieta 2 del Z (producto del Tau)
-
-                    if((std::abs(id_grdaug1_1) == 211 || std::abs(id_grdaug1_1) == 16) && (std::abs(id_grdaug1_2) == 211 || std::abs(id_grdaug1_2) == 16))
-                    // Debemos buscar que id_grdaug1,2 sean pi (id=+/-211) y neutrino tau (id=+/-16)
+                    // Obtenemos los índices de las hijas del Tau 1
+                    std::vector<int> grdaug_tau1 = pythia.event[pos_daug1].daughterList();
+                    // Recorremos el vector en busca de las ID deseadas
+                    int idx_pi1 = -1; // Variables auxiliares para buscar IDs
+                    int idx_nu1 = -1;
+                    for(int idx : grdaug_tau1) // idx son las posiciones donde hay hijas. Hay que calzar idx con piones y neutrinos
                     {
-                        if((std::abs(id_grdaug2_1) == 211 || std::abs(id_grdaug2_1) == 16) && (std::abs(id_grdaug2_2) == 211 || std::abs(id_grdaug2_2) == 16))
+                        int aux = std::abs(pythia.event[idx].id());
+                        if(aux == 211) // Si es pion
                         {
-
-
-                            // Si pasaron todos estos condicionales entonces encontramos el canal objetivo y que lo diga en la consola
-                            std::cout << "¡Canal Z-boson -> Tau/Antitau -> pi^ nu_tau detectado en evento " << i << "!" << std::endl;
-
-                            output_file << i << ", " << id << ", " << pythia.event[j].m() << ", " << pythia.event[j].e() << ", " << pythia.event[j].px() << ", " << pythia.event[j].py() << ", " << pythia.event[j].pz() << std::endl; // Guardamos datos del Z madre
-
-                            output_file << i << ", " << id_daug1 << ", " << pythia.event[pos_daug1].m() << ", " << pythia.event[pos_daug1].e() << ", " << pythia.event[pos_daug1].px() << ", " << pythia.event[pos_daug1].py() << ", " << pythia.event[pos_daug1].pz() << std::endl; // Guardamos datos del Tau 1
-
-                            output_file << i << ", " << id_daug2 << ", " << pythia.event[pos_daug2].m() << ", " << pythia.event[pos_daug2].e() << ", " << pythia.event[pos_daug2].px() << ", " << pythia.event[pos_daug2].py() << ", " << pythia.event[pos_daug2].pz() << std::endl; // Guardamos datos del Tau 2
-
-                            output_file << i << ", " << id_grdaug1_1 << ", " << pythia.event[pos_grdaug1_1].m() << ", " <<  pythia.event[pos_grdaug1_1].e() << ", " << pythia.event[pos_grdaug1_1].px() << ", " << pythia.event[pos_grdaug1_1].py() << ", " << pythia.event[pos_grdaug1_1].pz() << std::endl; // Guardamos nieta 1 del Tau 1
-
-                            output_file << i << ", " << id_grdaug2_1 << ", " << pythia.event[pos_grdaug2_1].m() << ", " <<  pythia.event[pos_grdaug2_1].e() << ", " << pythia.event[pos_grdaug2_1].px() << ", " << pythia.event[pos_grdaug2_1].py() << ", " << pythia.event[pos_grdaug2_1].pz() << std::endl; // Guardamos nieta 1 del Tau 2
-
-                            output_file << i << ", " << id_grdaug1_2 << ", " << pythia.event[pos_grdaug1_2].m() << ", " << pythia.event[pos_grdaug1_2].e() << ", " << pythia.event[pos_grdaug1_2].px() << ", " << pythia.event[pos_grdaug1_2].py() << ", " << pythia.event[pos_grdaug1_2].pz() << std::endl; // Guardamos nieta 2 del Tau 1
-
-                            output_file << i << ", " << id_grdaug2_2 << ", " << pythia.event[pos_grdaug2_2].m() << ", " << pythia.event[pos_grdaug2_2].e() << ", " << pythia.event[pos_grdaug2_2].px() << ", " << pythia.event[pos_grdaug2_2].py() << ", " << pythia.event[pos_grdaug2_2].pz() << std::endl; // Guardamos nieta 2 del Tau 2
+                            idx_pi1 = idx; // Guardamos el pion
 
                         }
+                        else if(aux == 16) // Si es neutrino
+                        {
+                            idx_nu1 = idx; // Guardamos el neutrino
+                        }
+                    } // Hasta acá recorrimos el Tau 1 y guardamos las variables.
+
+                    // Veamos ahora el Tau 2
+                    std::vector<int> grdaug_tau2 = pythia.event[pos_daug2].daughterList();
+                    // Obtenemos los índices de las hijas del Tau 1
+                    // Recorremos el vector en busca de las ID deseadas
+                    int idx_pi2 = -1; // Variables auxiliares para buscar IDs
+                    int idx_nu2 = -1;
+                    for(int idx : grdaug_tau2) // idx son las posiciones donde hay hijas. Hay que calzar idx con piones y neutrinos
+                    {
+                        int aux = std::abs(pythia.event[idx].id());
+                        if(aux == 211) // Si es pion
+                        {
+                            idx_pi2 = idx; // Guardamos el pion
+                        }
+                        else if(aux == 16) // Si es neutrino
+                        {
+                            idx_nu2 = idx; // Guardamos el neutrino
+                        }
+                    }
+
+                    if(idx_pi1 != -1 && idx_nu1 != -1 && idx_pi2 != -1 && idx_nu2 != -1)
+                    {
+                        // Si pasaron todos estos condicionales entonces encontramos el canal objetivo y que lo diga en la consola
+                        std::cout << "¡Canal Z-boson -> Tau/Antitau -> pi^ nu_tau detectado en evento " << i << "!" << std::endl;
+
+                        // Guardamos información en el output
+                        output_file << i << ", " << id << ", " << pythia.event[j].m() << ", " << pythia.event[j].e() << ", " << pythia.event[j].px() << ", " << pythia.event[j].py() << ", " << pythia.event[j].pz() << std::endl; // Guardamos datos del Z madre
+
+                        output_file << i << ", " << id_daug1 << ", " << pythia.event[pos_daug1].m() << ", " << pythia.event[pos_daug1].e() << ", " << pythia.event[pos_daug1].px() << ", " << pythia.event[pos_daug1].py() << ", " << pythia.event[pos_daug1].pz() << std::endl; // Guardamos datos del Tau 1
+
+                        output_file << i << ", " << id_daug2 << ", " << pythia.event[pos_daug2].m() << ", " << pythia.event[pos_daug2].e() << ", " << pythia.event[pos_daug2].px() << ", " << pythia.event[pos_daug2].py() << ", " << pythia.event[pos_daug2].pz() << std::endl; // Guardamos datos del Tau 2
+
+                        output_file << i << ", " << pythia.event[idx_pi1].id() << ", " << pythia.event[idx_pi1].m() << ", " <<  pythia.event[idx_pi1].e() << ", " << pythia.event[idx_pi1].px() << ", " << pythia.event[idx_pi1].py() << ", " << pythia.event[idx_pi1].pz() << std::endl; // Guardamos nieta 1 del Tau 1
+
+                        output_file << i << ", " << pythia.event[idx_nu1].id() << ", " << pythia.event[idx_nu1].m() << ", " <<  pythia.event[idx_nu1].e() << ", " << pythia.event[idx_nu1].px() << ", " << pythia.event[idx_nu1].py() << ", " << pythia.event[idx_nu1].pz() << std::endl; // Guardamos nieta 2 del Tau 1
+
+                        output_file << i << ", " << pythia.event[idx_pi2].id() << ", " << pythia.event[idx_pi2].m() << ", " <<  pythia.event[idx_pi2].e() << ", " << pythia.event[idx_pi2].px() << ", " << pythia.event[idx_pi2].py() << ", " << pythia.event[idx_pi2].pz() << std::endl; // Guardamos nieta 1 del Tau 2
+
+                        output_file << i << ", " << pythia.event[idx_nu2].id() << ", " << pythia.event[idx_nu2].m() << ", " <<  pythia.event[idx_nu2].e() << ", " << pythia.event[idx_nu2].px() << ", " << pythia.event[idx_nu2].py() << ", " << pythia.event[idx_nu2].pz() << std::endl; // Guardamos nieta 2 del Tau 2
+
                     }
                 }
-
-
             }
         }
     }
