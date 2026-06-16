@@ -1,24 +1,39 @@
 #include <fstream> // registrar datos
 #include "Pythia8/Pythia.h"
 
-int main() {
+int main(int argc, char* argv[]) {
 
-    int nevents = 1e6;
+    if (argc < 2)
+    {
+        std::cerr << "Uso: " << argv[0] << " <random_seed>" << std::endl;
+        return 1;
+    }
+
+    int seed = std::stoi(argv[1]); // argumento a entero
+
+    int nevents = 3e6;
 
     Pythia8::Pythia pythia;
+
+    // Paralelizar pythia
+    pythia.readString("Random:setSeed = on");  // Control manual de semilla
+    pythia.readString("Random:seed = " + std::to_string(seed)); // Asigna semilla única
 
     pythia.readString("Beams:idA = -11"); // Beam de positrones
     pythia.readString("Beams:idB = 11"); // Beam de electrones
     pythia.readString("Beams:eCM = 91.1876"); // Z-Boson resonance energy
 
     pythia.readString("WeakSingleBoson:ffbar2gmZ = on");
-    // pythia.readString("23:onMode = off"); // Apagamos canales de desintegración del Z
-    pythia.readString("23:onMode = on"); // abrimos todos los canales de desintegración del Z
-    // pythia.readString("23:onIfMatch = 15 -15"); // Activamos sólo el canal de par taus
+    // pythia.readString("23:onMode = on"); // abrimos todos los canales de desintegración del Z
+    pythia.readString("23:onMode = off"); // Apagamos canales de desintegración del Z
+    pythia.readString("23:onIfMatch = 15 -15"); // Activamos sólo el canal de par taus
 
     pythia.init();
 
-    std::ofstream output_file("e+e-_data.csv"); // define output
+//     std::ofstream output_file("e+e-_data.csv"); // define output SOLO PARA CORRER EN UN NODO
+    // Output paralelizado
+    std::string filename = "Z_decay_" + std::to_string(seed) + ".csv";
+    std::ofstream output_file(filename);
     output_file << "event,id,mass,energy,px,py,pz" << std::endl; // Encabezado archivo datos
 
     for(int i = 0; i < nevents; i++) // Corremos de 0 a nevents-1

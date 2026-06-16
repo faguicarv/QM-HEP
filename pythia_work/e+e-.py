@@ -2,7 +2,7 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
-files = [f"output_Z_decay_{i}.csv" for i in range(1,401)] # Creamos una lista con todos los nombres de los archivos extraídos de pythia
+files = [f"output_Z_decay_{i}.csv" for i in range(1,501)] # Creamos una lista con todos los nombres de los archivos extraídos de pythia
 data = []
 for file_name in files:
     with open(file_name, mode='r', newline='') as file:
@@ -20,6 +20,16 @@ ids = data_array[:, 1].astype(int)
 
 # Filtramos directamente por id de partícula y creamos un array con toda la información correspondiente
 Z_boson, tau, antitau, piplus, piminus, neutau, antineutau = data_array[ids == 23], data_array[ids == 15], data_array[ids == -15], data_array[ids == 211], data_array[ids == -211], data_array[ids == 16], data_array[ids == -16]
+
+print("El total de eventos registrados son:")
+print("Z = ", len(Z_boson))
+print("\u03C4 = ", len(tau))
+print("anti-\u03C4 = ", len(antitau))
+print("\u03C4+ = ", len(piplus))
+print("\u03C4- = ", len(piminus))
+print("\u03BD_\u03C4  = ", len(neutau))
+print("anti \u03BD_\u03C4  = ", len(antineutau))
+
 
 # ----- NOTA: EL TAU ES tau^- (id=15)
 # Construimos los cuatrimomentos de las partículas objetivo (Energía, 3momento)
@@ -126,7 +136,7 @@ for ax in axs.flat:
     # 3. Encender la grilla suave que seguirá a estos ticks
     ax.grid(True, linestyle='--', alpha=0.3)
 
-bins = 150
+bins = 40
 
 # Gráfico 1: Proyección en n
 axs[0, 0].hist(cos_n_plus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='darksalmon', label=r'$\cos\theta_n^+$')
@@ -195,61 +205,94 @@ axs2[0, 0].set_xlim(-1.1, 1.1)
 axs2[0, 1].hist(np_rm, bins=bins, density=True, histtype='stepfilled', linewidth=1, color='sandybrown')
 axs2[0, 1].set_xlabel(r"$\cos\theta_n^+ \cos\theta_r^-$")
 axs2[0, 1].set_xlim(-1.1, 1.1)
-# axs2[0, 1].grid(True)
 
 # Gráfico 3: cos_n^+ cos_k^-
 axs2[0, 2].hist(np_km, bins=bins, density=True, histtype='stepfilled', linewidth=1, color='plum')
 axs2[0, 2].set_xlabel(r"$\cos\theta_n^+ \cos\theta_k^-$")
 axs2[0, 2].set_xlim(-1.1, 1.1)
-# axs2[0, 2].grid(True)
 
 # Gráfico 4: cos_r^+ cos_n^-
 axs2[1, 0].hist(rp_nm, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='lightsalmon')
 axs2[1, 0].set_xlabel(r"$\cos\theta_r^+ \cos\theta_n^-$")
 axs2[1, 0].set_xlim(-1.1, 1.1)
-# axs2[1, 0].grid(True)
 
 # Gráfico 5: cos_r^+ cos_r^-
 axs2[1, 1].hist(rp_rm, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='sandybrown')
 axs2[1, 1].set_xlabel(r"$\cos\theta_r^+ \cos\theta_r^-$")
 axs2[1, 1].set_xlim(-1.1, 1.1)
-# axs2[1, 1].grid(True)
 
 # Gráfico 6: cos_r^+ cos_k^-
 axs2[1, 2].hist(rp_km, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='plum')
 axs2[1, 2].set_xlabel(r"$\cos\theta_r^+ \cos\theta_k^-$")
 axs2[1, 2].set_xlim(-1.1, 1.1)
-# axs2[1, 2].grid(True)
 
 # Gráfico 7: cos_k^+ cos_n^-
 axs2[2, 0].hist(kp_nm, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='lightsalmon')
 axs2[2, 0].set_xlabel(r"$\cos\theta_k^+ \cos\theta_n^-$")
 axs2[2, 0].set_xlim(-1.1, 1.1)
-# axs2[2, 0].grid(True)
 
 # Gráfico 8: cos_k^+ cos_r^-
 axs2[2, 1].hist(kp_rm, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='sandybrown')
 axs2[2, 1].set_xlabel(r"$\cos\theta_k^+ \cos\theta_r^-$")
 axs2[2, 1].set_xlim(-1.1, 1.1)
-# axs2[2, 1].grid(True)
 
 # Gráfico 9: cos_k^+ cos_k^-
 axs2[2, 2].hist(kp_km, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='plum')
 axs2[2, 2].set_xlabel(r"$\cos\theta_k^+ \cos\theta_k^-$")
 axs2[2, 2].set_xlim(-1.1, 1.1)
-# axs2[2, 2].grid(True)
-
-
-
-
-
 
 
 # Ajustar automáticamente los márgenes para que los títulos y etiquetas no se superpongan
 plt.tight_layout()
-
-# Mostrar la figura con los 3 subgráficos
 plt.show()
+
+# Con los valores medios de cada coseno, podemos obtener valores para los B_i^+- y C_ij
+B_np, B_nm, B_rp, B_rm, B_kp, B_km = 3 * np.mean(cos_n_plus), -3 * np.mean(cos_n_minus), 3 * np.mean(cos_r_plus), -3 * np.mean(cos_r_minus), 3 * np.mean(cos_k_plus), -3 * np.mean(cos_k_minus)
+
+# C_npnp, C_nprp, C_npkp = 9 * nB_np * B_np, B_np * B_rp, B_np * B_kp
+# C_rpnp, C_rprp, C_rpkp = B_rp * B_np, B_rp * B_rp, B_rp * B_kp
+# C_kpnp, C_kprp, C_kpkp = B_kp * B_np, B_kp * B_rp, B_kp * B_kp
+
+C_npnm, C_nprm, C_npkm = 9 * np.mean(cos_n_plus * cos_n_minus), 9 * np.mean(cos_n_plus * cos_r_minus), 9 * np.mean(cos_n_plus * cos_k_minus)
+C_rpnm, C_rprm, C_rpkm = 9 * np.mean(cos_r_plus * cos_n_minus), 9 * np.mean(cos_r_plus * cos_r_minus), 9 * np.mean(cos_r_plus * cos_k_minus)
+C_kpnm, C_kprm, C_kpkm = 9 * np.mean(cos_k_plus * cos_n_minus), 9 * np.mean(cos_k_plus * cos_r_minus), 9 * np.mean(cos_k_plus * cos_k_minus)
+
+# C_ij = np.array([[C_npnp, C_nprp, C_npkp],
+#                  [C_rpnp, C_rprp, C_rpkp],
+#                  [C_kpnp, C_kprp, C_kpkp]])
+
+
+C_ij = np.array([[C_npnm, C_nprm, C_npkm],
+                 [C_rpnm, C_rprm, C_rpkm],
+                 [C_kpnm, C_kprm, C_kpkm]])
+
+
+
+print("Matriz C_ij: ", C_ij)
+# C_npnm = B_np * B_nm
+# C_nprm = B_np * B_rm
+# C_npkm = B_np * B_km
+# C_nmnm = B_nm * B_nm
+# C_nmrp = B_nm * B_rp
+# C_nmrm = B_nm * B_rm
+# C_nmkp = B_nm * B_kp
+# C_nmkm = B_nm * B_km
+# C_rprm = B_rp * B_rm
+# C_rpkp = B_rp * B_kp
+# C_rpkm = B_rp * B_km
+# C_kpkm = B_kp * B_km
+# C_kmkm = B_km * B_km
+
+
+
+
+
+
+
+
+
+
+
 
 
 
