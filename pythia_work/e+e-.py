@@ -2,7 +2,7 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
-files = [f"output_Z_decay_{i}.csv" for i in range(1,501)] # Creamos una lista con todos los nombres de los archivos extraídos de pythia
+files = [f"Z_decay_{i}.csv" for i in range(1,501)] # Creamos una lista con todos los nombres de los archivos extraídos de pythia
 data = []
 for file_name in files:
     with open(file_name, mode='r', newline='') as file:
@@ -140,42 +140,42 @@ bins = 40
 
 # Gráfico 1: Proyección en n
 axs[0, 0].hist(cos_n_plus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='darksalmon', label=r'$\cos\theta_n^+$')
-axs[0, 0].axhline(y=0.5, color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
+axs[0, 0].axvline(np.mean(cos_n_plus), color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
 axs[0, 0].set_title(r"Proyección $\pi^+$-momentum en $\hat{n}$")
 axs[0, 0].set_xlabel(r"$\cos\theta_n^+$")
 axs[0, 0].legend(loc="lower center")
 
 # Gráfico 2: Proyección en r
 axs[0, 1].hist(cos_r_plus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='lightpink', label=r'$\cos\theta_r^+$')
-axs[0, 1].axhline(y=0.5, color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
+axs[0, 1].axvline(np.mean(cos_r_plus), color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
 axs[0, 1].set_title(r"Proyección $\pi^+$-momentum en $\hat{r}$")
 axs[0, 1].set_xlabel(r"$\cos\theta_r^+$")
 axs[0, 1].legend(loc="lower center")
 
 # Gráfico 3: Proyección en k
 axs[0, 2].hist(cos_k_plus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='thistle', label=r'$\cos\theta_k^+$')
-axs[0, 2].axhline(y=0.5, color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
+axs[0, 2].axvline(np.mean(cos_k_plus), color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
 axs[0, 2].set_title(r"Proyección $\pi^+$-momentum en $\hat{k}$")
 axs[0, 2].set_xlabel(r"$\cos\theta_k^+$")
 axs[0, 2].legend(loc="lower center")
 
 # Gráfico 4: Proyección cos_n^-
 axs[1, 0].hist(cos_n_minus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='darksalmon', label=r'$\cos\theta_n^-$')
-axs[1, 0].axhline(y=0.5, color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
+axs[1, 0].axvline(np.mean(cos_n_minus), color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
 axs[1, 0].set_title(r"Proyección $\pi^-$-momentum en $\hat{n}$")
 axs[1, 0].set_xlabel(r"$\cos\theta_n^-$")
 axs[1, 0].legend(loc="lower center")
 
 # Gráfico 5: Proyección cos_r^-
 axs[1, 1].hist(cos_r_minus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='lightpink', label=r'$\cos\theta_n^-$')
-axs[1, 1].axhline(y=0.5, color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
+axs[1, 1].axvline(np.mean(cos_r_minus), color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
 axs[1, 1].set_title(r"Proyección $\pi^-$-momentum en $\hat{r}$")
 axs[1, 1].set_xlabel(r"$\cos\theta_r^-$")
 axs[1, 1].legend(loc="lower center")
 
 # Gráfico 6: Proyección cos_r^-
 axs[1, 2].hist(cos_k_minus, bins=bins, density=True, histtype='stepfilled', linewidth=2, color='thistle', label=r'$\cos\theta_n^-$')
-axs[1, 2].axhline(y=0.5, color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
+axs[1, 2].axvline(np.mean(cos_k_minus), color='red', linestyle='--', alpha=0.7, label=r'$y=0.5$')
 axs[1, 2].set_title(r"Proyección $\pi^-$-momentum en $\hat{k}$")
 axs[1, 2].set_xlabel(r"$\cos\theta_k^-$")
 axs[1, 2].legend(loc="lower center")
