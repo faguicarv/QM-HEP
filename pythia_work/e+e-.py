@@ -1,25 +1,31 @@
 import numpy as np
 import csv
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-files = [f"Z_decay_{i}.csv" for i in range(1,501)] # Creamos una lista con todos los nombres de los archivos extraídos de pythia
-data = []
-for file_name in files:
-    with open(file_name, mode='r', newline='') as file:
-        reader = csv.reader(file)
-        next(reader)
-        for row in reader:
-            numeric_row = list(map(float, row))
-            data.append(numeric_row)
+data_path = Path("/home/faguicarv/QM-HEP/cluster/160626/output")
+data = [data_path / f"Z_decay_{i}.csv" for i in range(1,601)] # Creamos una lista con todos los nombres de los archivos extraídos de pythia
 
-# Mucho más fácil trabajar con arrays
-data_array = np.array(data)
+def stream_all_rows(files, target_id):
+    for file_name in files:
+        with open(file_name, mode='r', newline='') as file:
+            reader = csv.reader(file)
+            next(reader)
+            for row in reader:
+                numeric_row = [float(val) for val in row]
+                if int(numeric_row[0]) == target_id:
+                    for val in numeric_row:
+                        yield val
 
-#creamos un array de solamente las id de las partículas
-ids = data_array[:, 1].astype(int)
+cols = 7
+Z_boson = np.fromiter(stream_all_rows(data, 23), dtype=float).reshape(-1, cols)
+tau = np.fromiter(stream_all_rows(data, 15), dtype=float).reshape(-1, cols)
+antitau = np.fromiter(stream_all_rows(data, -15), dtype=float).reshape(-1, cols)
+piplus = np.fromiter(stream_all_rows(data, 211), dtype=float).reshape(-1, cols)
+piminus = np.fromiter(stream_all_rows(data, -211), dtype=float).reshape(-1, cols)
+neutau = np.fromiter(stream_all_rows(data, 16), dtype=float).reshape(-1, cols)
+antineutau = np.fromiter(stream_all_rows(data, -16), dtype=float).reshape(-1, cols)
 
-# Filtramos directamente por id de partícula y creamos un array con toda la información correspondiente
-Z_boson, tau, antitau, piplus, piminus, neutau, antineutau = data_array[ids == 23], data_array[ids == 15], data_array[ids == -15], data_array[ids == 211], data_array[ids == -211], data_array[ids == 16], data_array[ids == -16]
 
 print("El total de eventos registrados son:")
 print("Z = ", len(Z_boson))
@@ -111,6 +117,7 @@ cos_k_plus = np.sum(piplus_tRF * k_hat, axis=1, keepdims=True)
 piminus_4p_tRF = boost_to_rest_frame(piminus_4p, beta, gamma, 1)
 piminus_3p_tRF = piminus_4p_tRF[:, 1:4]
 piminus_tRF = piminus_3p_tRF / np.linalg.norm(piminus_3p_tRF, axis=1, keepdims=True)
+
 
 # Proyecciones del 3-momento del pi^- en la base n,r,k
 cos_n_minus = np.sum(piminus_tRF * n_hat, axis=1, keepdims=True)
